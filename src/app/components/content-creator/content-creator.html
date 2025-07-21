@@ -1,0 +1,132 @@
+<header class="header">
+  <div class="search-container">
+    <mat-icon>search</mat-icon>
+    <input type="text" placeholder="Search courses, students..." [(ngModel)]="searchTerm" />
+  </div>
+  <div class="user-actions">
+    <button class="notify-btn">
+      <mat-icon>notifications</mat-icon>
+      <span class="badge">3</span>
+    </button>
+    <div class="user-profile">
+      <img src="./public/favicon.ico" alt="User" />
+      <span class="username">John Smith</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </div>
+  </div>
+</header>
+
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h2>Dashboard</h2>
+  </div>
+  <nav>
+    <ul>
+      <li>
+        <mat-icon>book</mat-icon>
+        <span>Courses</span>
+      </li>
+      <li class="active">
+        <mat-icon>people</mat-icon>
+        <span>Students</span>
+      </li>
+      <li>
+        <mat-icon>analytics</mat-icon>
+        <span>Analytics</span>
+      </li>
+      <li>
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </li>
+    </ul>
+  </nav>
+</aside>
+
+<main class="main-content">
+  <!-- Welcome Section -->
+  <section class="welcome-section">
+    <h1>Welcome back!</h1>
+    <p>Here's what's happening with your courses today.</p>
+    
+    <div class="stats-container">
+      <div class="stat-card">
+        <h3>Total Students</h3>
+        <div class="stat-value">1,245</div>
+        <div class="stat-change positive">↑ 12% from last month</div>
+      </div>
+      
+      <div class="stat-card">
+        <h3>Completion Rate</h3>
+        <div class="stat-value">8 Courses</div>
+        <div class="stat-change positive">↑ 5% from last month</div>
+      </div>
+      
+      <div class="stat-card">
+        <h3>Avg. Engagement</h3>
+        <div class="stat-value">24min</div>
+        <div class="stat-change positive">↑ 43% from last month</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="active-courses">
+    <div class="section-header">
+      <h2>Your Active Courses</h2>
+      <button class="view-all">View All</button>
+    </div>
+    <div class="course-grid">
+      <div class="course-card" *ngFor="let course of filteredCourses">
+        <div class="course-badge" [style.background]="course.color"></div>
+        <h3>{{ course.title }}</h3>
+        <p>{{ course.description }}</p>
+        <div class="progress-container">
+          <span>{{ course.progress }}% Complete</span>
+          <progress [value]="course.progress" max="100"></progress>
+        </div>
+        <div class="stats">
+          <span><mat-icon>people</mat-icon> {{ course.students }}</span>
+          <span><mat-icon>menu_book</mat-icon> {{ course.lessons }}</span>
+          <span><mat-icon>quiz</mat-icon> {{ course.quizzes }}</span>
+        </div>
+        <button class="continue-btn">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="content-row">
+    <section class="engagement">
+      <div class="section-header">
+        <h2>Student Engagement</h2>
+        <div class="tabs">
+          <button [class.active]="engagementView === 'week'" (click)="setView('week')">Week</button>
+          <button [class.active]="engagementView === 'month'" (click)="setView('month')">Month</button>
+          <button [class.active]="engagementView === 'year'" (click)="setView('year')">Year</button>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart
+          [data]="chartData"
+          [options]="chartOptions"
+          chartType="line">
+        </canvas>
+      </div>
+    </section>
+
+    <section class="recent-activity">
+      <div class="section-header">
+        <h2>Recent Activity</h2>
+      </div>
+      <div class="activity-list">
+        <div class="activity-item" *ngFor="let activity of activities">
+          <div class="activity-icon">
+            <mat-icon>{{ activity.icon }}</mat-icon>
+          </div>
+          <div class="activity-details">
+            <p>{{ activity.description }}</p>
+            <span class="time">{{ activity.time }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>

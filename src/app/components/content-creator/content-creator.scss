@@ -1,0 +1,467 @@
+/* Variables */
+:root {
+  --primary-color: #7E57C2;
+  --secondary-color: #5E35B1;
+  --accent-color: #B39DDB;
+  --light-purple: #D1C4E9;
+  --dark-purple: #4527A0;
+  --surface-primary: #f5f5f5;
+  --surface-secondary: #eeeeee;
+  --white: #FFFFFF;
+  --text-primary: #2D3748;
+  --text-secondary: #718096;
+  --success: #48BB78;
+  --positive: #10B981;
+}
+
+/* Base Styles */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  color: var(--text-primary);
+  background-color: var(--surface-primary);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 280px;
+  background: var(--secondary-color);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+  position: fixed;
+  height: 100vh;
+  padding: 1.5rem 0;
+   z-index: 10;
+}
+
+.sidebar .sidebar-header {
+  padding: 0 1.5rem 1.5rem;
+  border-bottom: 1px solid var(--surface-secondary);
+}
+
+.sidebar .sidebar-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 1.5rem 0;
+  margin: 0;
+}
+
+.sidebar nav ul li {
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  margin: 0.25rem 1rem;
+  border-radius: 8px;
+}
+
+.sidebar nav ul li mat-icon {
+  margin-right: 1rem;
+  color: var(--text-secondary);
+}
+
+.sidebar nav ul li span {
+  font-size: 0.95rem;
+}
+
+.sidebar nav ul li:hover {
+  background-color: var(--light-purple);
+  color: var(--primary-color);
+}
+
+.sidebar nav ul li:hover mat-icon {
+  color: var(--primary-color);
+}
+
+
+
+/* Header */
+.header {
+  margin-left: 280px;
+  height: 80px;
+  background:#E2E8F0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.header .search-container {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  width: 400px;
+  position: static;
+  top: 0;
+}
+
+.header .search-container mat-icon {
+  color: var(--text-secondary);
+  margin-right: 0.5rem;
+}
+
+.header .search-container input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.header .search-container input::placeholder {
+  color: var(--text-secondary);
+}
+
+.header .user-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header .user-actions .notify-btn {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #2D3748;
+  padding: 0.5rem;
+}
+
+.header .user-actions .notify-btn .badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #EF4444;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header .user-actions .user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.header .user-actions .user-profile img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.header .user-actions .user-profile .username {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.header .user-actions .user-profile mat-icon {
+  color: var(--text-primary);
+  font-size: 1.2rem;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 280px;
+  padding: 2rem;
+  background-color:#E2E8F0;
+}
+
+/* Welcome Section */
+.welcome-section {
+  margin-bottom: 2rem;
+}
+
+.welcome-section h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: black;
+}
+
+.welcome-section p {
+  color: black;
+  margin-bottom: 1.5rem;
+}
+
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.stat-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: black;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: black;
+  margin-bottom: 0.5rem;
+}
+
+.stat-change {
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+}
+
+.stat-change.positive {
+  color: black;
+}
+
+/* Rest of the styles remain the same as previous code */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: black;
+}
+
+.section-header .view-all {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+}
+
+.section-header .view-all:hover {
+  text-decoration: underline;
+}
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.course-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+.course-card .course-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+}
+
+.course-card h3 {
+  margin: 0 0 0.5rem;
+  color: black;
+  font-size: 1.1rem;
+}
+
+.course-card p {
+  margin: 0 0 1rem;
+  color: rgb(74, 68, 68);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.course-card .progress-container {
+  margin: 1.5rem 0;
+}
+
+.course-card .progress-container span {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--accent-color);
+}
+
+.course-card .progress-container progress {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.course-card .progress-container progress::-webkit-progress-bar {
+  background-color: var(--text-secondary);
+  border-radius: 3px;
+}
+
+.course-card .progress-container progress::-webkit-progress-value {
+  background-color: var(--primary-color);
+  border-radius: 3px;
+}
+
+.course-card .stats {
+  display: flex;
+  justify-content: space-between;
+  margin: 1.5rem 0;
+  font-size: 0.8rem;
+}
+
+.course-card .stats span {
+  display: flex;
+  align-items: center;
+  color: var(--secondary-color);
+}
+
+.course-card .stats span mat-icon {
+  font-size: 1rem;
+  margin-right: 0.25rem;
+}
+
+.course-card .continue-btn {
+  width: 100%;
+  background: rgb(86, 86, 240);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.course-card .continue-btn:hover {
+  background: var(--secondary-color);
+}
+
+.content-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+
+.engagement {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.engagement .tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.engagement .tabs button {
+  background: var(--surface-secondary);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: gray;
+  transition: all 0.2s ease;
+}
+
+.engagement .tabs button:hover {
+  background: var(--light-purple);
+}
+
+.engagement .tabs button.active {
+  background: var(--primary-color);
+  color: rgb(255, 255, 255);
+}
+
+.engagement .chart-container {
+  margin-top: 1.5rem;
+  height: 300px;
+}
+
+.recent-activity {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.recent-activity .activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.recent-activity .activity-item {
+  display: flex;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--surface-secondary);
+}
+
+.recent-activity .activity-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.recent-activity .activity-item .activity-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--surface-secondary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+}
+
+.recent-activity .activity-item .activity-details {
+  flex: 1;
+}
+
+.recent-activity .activity-item .activity-details p {
+  margin: 0 0 0.25rem;
+  font-size: 0.9rem;
+}
+
+.recent-activity .activity-item .activity-details .time {
+  font-size: 0.75rem;
+  color: gray;
+}

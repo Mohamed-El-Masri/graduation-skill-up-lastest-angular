@@ -1,0 +1,684 @@
+/* Import font for better typography */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+.learning-paths-container {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding-bottom: 3rem;
+  color: #333;
+  line-height: 1.6;
+
+  /* Ensure all mat-icons use material icons font */
+  mat-icon {
+    font-family: 'Material Icons';
+    font-feature-settings: 'liga';
+    -webkit-font-feature-settings: 'liga';
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Hero Section */
+.hero-header {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+  padding: 3rem 2rem;
+  color: white;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  
+  .hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+    
+    .hero-text {
+      flex: 1;
+      min-width: 300px;
+      
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+      
+      p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+        max-width: 600px;
+        font-weight: 300;
+      }
+    }
+    
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+      
+      .stat-item {
+        text-align: center;
+        
+        .stat-number {
+          font-size: 2rem;
+          font-weight: 700;
+          display: block;
+          line-height: 1;
+        }
+        
+        .stat-label {
+          font-size: 0.9rem;
+          opacity: 0.8;
+          font-weight: 400;
+        }
+      }
+    }
+    
+    .hero-visual {
+      flex: 1;
+      min-width: 300px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      position: relative;
+      
+      .floating-element {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        padding: 1.5rem;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease;
+        
+        mat-icon {
+          font-size: 2.5rem;
+          margin-bottom: 0.5rem;
+          color: white;
+        }
+        
+        span {
+          font-size: 0.9rem;
+          text-align: center;
+          font-weight: 500;
+        }
+        
+        &:hover {
+          transform: translateY(-5px);
+          background: rgba(255, 255, 255, 0.25);
+        }
+      }
+    }
+  }
+}
+
+/* Filters Section */
+.filters-section {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  
+  .filters-content {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    
+    .search-bar {
+      margin-bottom: 1.5rem;
+      
+      .search-field {
+        width: 100%;
+        
+        .mat-mdc-text-field-wrapper {
+          border-radius: 50px;
+          background: #f5f7fa;
+        }
+        
+        mat-icon {
+          color: #667eea;
+        }
+      }
+    }
+    
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      
+      .filter-field {
+        flex: 1;
+        min-width: 200px;
+        
+        .mat-mdc-select-value {
+          display: flex;
+          align-items: center;
+          
+          mat-icon {
+            margin-right: 8px;
+            color: #667eea;
+          }
+        }
+      }
+      
+      .clear-filters-btn {
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        
+        mat-icon {
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+}
+
+/* Paths Section */
+.paths-section {
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  
+  .section-header {
+    margin-bottom: 2rem;
+    
+    h2 {
+      font-size: 1.8rem;
+      color: #2d3748;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    p {
+      color: #718096;
+      font-weight: 400;
+    }
+  }
+  
+  .paths-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    
+    .path-card-wrapper {
+      animation: fadeIn 0.5s ease forwards;
+      opacity: 0;
+      
+      @keyframes fadeIn {
+        to { opacity: 1; }
+      }
+    }
+    
+    .path-card {
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      
+      &.enrolled {
+        border-top: 4px solid #667eea;
+      }
+      
+      .path-header {
+        position: relative;
+        
+        .path-image {
+          height: 160px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+          
+          .image-placeholder {
+            mat-icon {
+              font-size: 4rem;
+              opacity: 0.3;
+              color: white;
+            }
+          }
+          
+          .level-badge {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-weight: 500;
+            
+            &.level-beginner {
+              background: rgba(102, 126, 234, 0.9);
+            }
+            
+            &.level-intermediate {
+              background: rgba(118, 75, 162, 0.9);
+            }
+            
+            &.level-advanced {
+              background: rgba(76, 81, 191, 0.9);
+            }
+            
+            mat-icon {
+              font-size: 1rem;
+              color: white;
+            }
+          }
+        }
+        
+        .enrollment-indicator {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          background: rgba(255, 255, 255, 0.9);
+          padding: 0.3rem 0.8rem;
+          border-radius: 50px;
+          display: flex;
+          align-items: center;
+          gap: 0.3rem;
+          font-size: 0.8rem;
+          color: #667eea;
+          font-weight: 500;
+          
+          mat-icon {
+            font-size: 1rem;
+            color: #4caf50;
+          }
+        }
+      }
+      
+      mat-card-header {
+        padding: 1.5rem 1.5rem 0;
+        
+        mat-card-title {
+          font-size: 1.2rem;
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+          color: #2d3748;
+        }
+        
+        mat-card-subtitle {
+          .path-meta {
+            display: flex;
+            gap: 1rem;
+            color: #718096;
+            font-size: 0.9rem;
+            font-weight: 400;
+            
+            span {
+              display: flex;
+              align-items: center;
+              gap: 0.3rem;
+              
+              mat-icon {
+                font-size: 1rem;
+                color: #667eea;
+              }
+            }
+          }
+        }
+      }
+      
+      mat-card-content {
+        padding: 0 1.5rem;
+        flex-grow: 1;
+        
+        .path-description {
+          color: #4a5568;
+          margin: 1rem 0;
+          line-height: 1.5;
+          font-weight: 400;
+        }
+        
+        .prerequisites {
+          margin: 1.5rem 0;
+          
+          h5 {
+            font-size: 0.9rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+          }
+          
+          .prereq-chip {
+            font-size: 0.75rem;
+            background: #edf2f7;
+            color: #4a5568;
+            font-weight: 400;
+          }
+        }
+        
+        .learning-objectives {
+          margin: 1.5rem 0;
+          
+          h5 {
+            font-size: 0.9rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+          }
+          
+          .objectives-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            
+            li {
+              display: flex;
+              align-items: flex-start;
+              gap: 0.5rem;
+              margin-bottom: 0.5rem;
+              font-size: 0.9rem;
+              font-weight: 400;
+              
+              mat-icon {
+                color: #667eea;
+                font-size: 1rem;
+              }
+              
+              &.more-objectives {
+                color: #667eea;
+                cursor: pointer;
+                font-weight: 500;
+                
+                mat-icon {
+                  color: inherit;
+                }
+              }
+            }
+          }
+        }
+        
+        .progress-section {
+          margin: 1.5rem 0;
+          
+          .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            
+            .progress-label {
+              font-size: 0.9rem;
+              color: #2d3748;
+              font-weight: 500;
+            }
+            
+            .progress-percentage {
+              font-weight: 600;
+              color: #667eea;
+            }
+          }
+          
+          .progress-details {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-top: 0.5rem;
+            font-weight: 400;
+          }
+        }
+      }
+      
+      mat-card-actions {
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #edf2f7;
+        
+        button {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-weight: 500;
+          
+          mat-icon {
+            font-size: 1.1rem;
+          }
+        }
+        
+        .secondary-btn {
+          color: #667eea;
+        }
+      }
+    }
+  }
+}
+
+/* My Learning Section */
+.my-learning-section {
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  
+  .section-header {
+    margin-bottom: 2rem;
+    
+    h2 {
+      font-size: 1.8rem;
+      color: #2d3748;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    p {
+      color: #718096;
+      font-weight: 400;
+    }
+  }
+  
+  .enrolled-paths-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    
+    .enrolled-path-wrapper {
+      animation: fadeIn 0.5s ease forwards;
+      opacity: 0;
+    }
+    
+    .enrolled-path-card {
+      padding: 1.5rem;
+      border-radius: 12px;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease;
+      
+      &:hover {
+        transform: translateY(-3px);
+      }
+      
+      .enrolled-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        
+        .path-title {
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+          
+          h4 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #2d3748;
+            font-weight: 600;
+          }
+          
+          mat-icon {
+            color: #667eea;
+          }
+        }
+        
+        .progress-badge {
+          background: #667eea;
+          color: white;
+          padding: 0.3rem 0.8rem;
+          border-radius: 50px;
+          font-size: 0.9rem;
+          font-weight: 500;
+        }
+      }
+      
+      .progress-details {
+        margin-bottom: 1.5rem;
+        
+        .modules-info {
+          font-size: 0.9rem;
+          color: #718096;
+          margin-bottom: 0.5rem;
+          font-weight: 400;
+        }
+      }
+      
+      .enrolled-actions {
+        button {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+/* Empty States */
+.empty-state, .no-results-state {
+  max-width: 600px;
+  margin: 4rem auto;
+  text-align: center;
+  padding: 2rem;
+  
+  .empty-illustration, .no-results-illustration {
+    margin-bottom: 1.5rem;
+    
+    mat-icon {
+      font-size: 4rem;
+      width: 4rem;
+      height: 4rem;
+      color: #667eea;
+      opacity: 0.7;
+    }
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+    color: #2d3748;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+  }
+  
+  p {
+    color: #718096;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+  
+  button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 auto;
+    font-weight: 500;
+    
+    mat-icon {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-header {
+    padding: 2rem 1rem;
+    
+    .hero-content {
+      .hero-text {
+        h1 {
+          font-size: 2rem;
+        }
+      }
+      
+      .hero-stats {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      
+      .hero-visual {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+  
+  .paths-grid, .enrolled-paths-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .filters-row {
+    flex-direction: column;
+    
+    .filter-field, .clear-filters-btn {
+      width: 100%;
+    }
+  }
+}
+
+/* Material Overrides */
+.mat-mdc-progress-bar {
+  height: 8px;
+  border-radius: 4px;
+  
+  .mdc-linear-progress__buffer-bar {
+    background-color: #edf2f7;
+  }
+  
+  .mdc-linear-progress__bar-inner {
+    border-color: #667eea;
+  }
+}
+
+.mat-mdc-card {
+  overflow: hidden;
+}
+
+/* Ensure all text is visible and clear */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+p, span {
+  font-weight: 400;
+  line-height: 1.6;
+}

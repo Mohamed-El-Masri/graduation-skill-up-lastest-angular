@@ -1,0 +1,324 @@
+
+    <div class="dashboard-container">
+      <!-- Hero Section -->
+      <div class="hero-section">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1>Welcome back, {{ currentUser?.firstName }} {{ currentUser?.lastName }}!</h1>
+            <p *ngIf="userProfile?.specialization">Specializing in {{ userProfile?.specialization }}</p>
+            <p *ngIf="!userProfile?.specialization">Transform your career with AI-powered learning and skill development</p>
+            <div class="hero-stats" *ngIf="userStatistics">
+              <div class="hero-stat">
+                <span class="number">{{ userStatistics.completedCourses }}</span>
+                <span class="label">Courses Completed</span>
+              </div>
+              <div class="hero-stat">
+                <span class="number">{{ userStatistics.learningPathsStarted }}</span>
+                <span class="label">Learning Paths</span>
+              </div>
+              <div class="hero-stat">
+                <span class="number">{{ userStatistics.averageAssessmentScore | number:'1.0-0' }}%</span>
+                <span class="label">Average Score</span>
+              </div>
+            </div>
+            <div class="hero-stats" *ngIf="!userStatistics && isLoadingStats">
+              <div class="hero-stat">
+                <span class="number">---</span>
+                <span class="label">Loading...</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="floating-cards">
+              <div class="floating-card card-1">
+                <mat-icon>code</mat-icon>
+                <span>{{ getUserSkill(0) }}</span>
+              </div>
+              <div class="floating-card card-2">
+                <mat-icon>design_services</mat-icon>
+                <span>{{ getUserSkill(1) }}</span>
+              </div>
+              <div class="floating-card card-3">
+                <mat-icon>analytics</mat-icon>
+                <span>{{ getUserSkill(2) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card primary">
+          <div class="stat-header">
+            <mat-icon>school</mat-icon>
+            <span class="stat-trend">+{{ userStatistics?.completedCourses || 0 }}</span>
+          </div>
+          <div class="stat-body">
+            <h3>{{ userStatistics?.completedCourses || 0 }}</h3>
+            <p>Completed Courses</p>
+            <div class="stat-progress">
+              <mat-progress-bar mode="determinate" [value]="(userStatistics?.completedCourses || 0) * 5"></mat-progress-bar>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card secondary">
+          <div class="stat-header">
+            <mat-icon>quiz</mat-icon>
+            <span class="stat-trend">{{ userStatistics?.averageAssessmentScore || 0 }}%</span>
+          </div>
+          <div class="stat-body">
+            <h3>{{ userStatistics?.assessmentsPassed || 0 }}</h3>
+            <p>Assessments Passed</p>
+            <div class="stat-progress">
+              <mat-progress-bar mode="determinate" [value]="userStatistics?.averageAssessmentScore || 0"></mat-progress-bar>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card accent">
+          <div class="stat-header">
+            <mat-icon>description</mat-icon>
+            <span class="stat-trend">+{{ userStatistics?.totalSkillPoints || 0 }}</span>
+          </div>
+          <div class="stat-body">
+            <h3>{{ userStatistics?.totalSkillPoints || 0 }}</h3>
+            <p>Skill Points</p>
+            <div class="stat-progress">
+              <mat-progress-bar mode="determinate" [value]="Math.min((userStatistics?.totalSkillPoints || 0) / 10, 100)"></mat-progress-bar>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card success">
+          <div class="stat-header">
+            <mat-icon>smart_toy</mat-icon>
+            <span class="stat-trend">{{ userStatistics?.timeSpentLearning || 0 }}h</span>
+          </div>
+          <div class="stat-body">
+            <h3>{{ userStatistics?.achievementsUnlocked || 0 }}</h3>
+            <p>Achievements</p>
+            <div class="stat-progress">
+              <mat-progress-bar mode="determinate" [value]="(userStatistics?.achievementsUnlocked || 0) * 10"></mat-progress-bar>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions with Enhanced Design -->
+      <div class="quick-actions-section">
+        <div class="section-header">
+          <h2>Power Tools</h2>
+          <p>Accelerate your professional growth with AI-powered features</p>
+        </div>
+        
+        <div class="actions-grid">
+          <div class="action-card ai-card" (click)="navigateTo('/ai-chat')">
+            <div class="card-background"></div>
+            <div class="card-content">
+              <div class="card-icon">
+                <mat-icon>psychology</mat-icon>
+              </div>
+              <h3>AI Career Advisor</h3>
+              <p>Get personalized career guidance and skill recommendations from our advanced AI</p>
+              <div class="card-features">
+                <span class="feature">• Personalized Learning</span>
+                <span class="feature">• Career Roadmaps</span>
+                <span class="feature">• 24/7 Support</span>
+              </div>
+              <button mat-button class="card-button">Start Session</button>
+            </div>
+          </div>
+
+          <div class="action-card cv-card" (click)="navigateTo('/cv-builder')">
+            <div class="card-background"></div>
+            <div class="card-content">
+              <div class="card-icon">
+                <mat-icon>article</mat-icon>
+              </div>
+              <h3>Smart CV Builder</h3>
+              <p>Create professional resumes with AI-powered content suggestions and industry templates</p>
+              <div class="card-features">
+                <span class="feature">• ATS Optimization</span>
+                <span class="feature">• Industry Templates</span>
+                <span class="feature">• AI Content</span>
+              </div>
+              <button mat-button class="card-button">Build CV</button>
+            </div>
+          </div>
+
+          <div class="action-card interview-card" (click)="navigateTo('/interview-prep')">
+            <div class="card-background"></div>
+            <div class="card-content">
+              <div class="card-icon">
+                <mat-icon>record_voice_over</mat-icon>
+              </div>
+              <h3>Interview Simulator</h3>
+              <p>Practice with AI-powered mock interviews and get real-time feedback</p>
+              <div class="card-features">
+                <span class="feature">• Real-time Feedback</span>
+                <span class="feature">• Industry Specific</span>
+                <span class="feature">• Performance Analytics</span>
+              </div>
+              <button mat-button class="card-button">Start Practice</button>
+            </div>
+          </div>
+
+          <div class="action-card learning-card" (click)="navigateTo('/learning-paths')">
+            <div class="card-background"></div>
+            <div class="card-content">
+              <div class="card-icon">
+                <mat-icon>timeline</mat-icon>
+              </div>
+              <h3>Learning Pathways</h3>
+              <p>Follow curated learning paths designed by industry experts and AI algorithms</p>
+              <div class="card-features">
+                <span class="feature">• Expert Curated</span>
+                <span class="feature">• Adaptive Learning</span>
+                <span class="feature">• Progress Tracking</span>
+              </div>
+              <button mat-button class="card-button">Explore Paths</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills Progress with Advanced Visualization -->
+      <div class="skills-section">
+        <div class="section-header">
+          <h2>Skill Mastery Dashboard</h2>
+          <p>Track your progress across different skill domains</p>
+        </div>
+        
+        <div class="skills-grid">
+          <div class="skill-card">
+            <div class="skill-header">
+              <div class="skill-icon programming">
+                <mat-icon>code</mat-icon>
+              </div>
+              <div class="skill-info">
+                <h4>Programming Skills</h4>
+                <span class="skill-level">Advanced</span>
+              </div>
+              <div class="skill-score">75%</div>
+            </div>
+            <div class="skill-progress">
+              <mat-progress-bar mode="determinate" value="75"></mat-progress-bar>
+            </div>
+            <div class="skill-tags">
+              <span class="tag">JavaScript</span>
+              <span class="tag">Python</span>
+              <span class="tag">Angular</span>
+            </div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-header">
+              <div class="skill-icon design">
+                <mat-icon>palette</mat-icon>
+              </div>
+              <div class="skill-info">
+                <h4>Design Skills</h4>
+                <span class="skill-level">Intermediate</span>
+              </div>
+              <div class="skill-score">60%</div>
+            </div>
+            <div class="skill-progress">
+              <mat-progress-bar mode="determinate" value="60"></mat-progress-bar>
+            </div>
+            <div class="skill-tags">
+              <span class="tag">UI/UX</span>
+              <span class="tag">Figma</span>
+              <span class="tag">Adobe XD</span>
+            </div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-header">
+              <div class="skill-icon management">
+                <mat-icon>groups</mat-icon>
+              </div>
+              <div class="skill-info">
+                <h4>Project Management</h4>
+                <span class="skill-level">Beginner</span>
+              </div>
+              <div class="skill-score">40%</div>
+            </div>
+            <div class="skill-progress">
+              <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+            </div>
+            <div class="skill-tags">
+              <span class="tag">Agile</span>
+              <span class="tag">Scrum</span>
+              <span class="tag">Leadership</span>
+            </div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-header">
+              <div class="skill-icon communication">
+                <mat-icon>forum</mat-icon>
+              </div>
+              <div class="skill-info">
+                <h4>Communication</h4>
+                <span class="skill-level">Expert</span>
+              </div>
+              <div class="skill-score">85%</div>
+            </div>
+            <div class="skill-progress">
+              <mat-progress-bar mode="determinate" value="85"></mat-progress-bar>
+            </div>
+            <div class="skill-tags">
+              <span class="tag">Presentation</span>
+              <span class="tag">Writing</span>
+              <span class="tag">Negotiation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity Feed -->
+      <div class="activity-section">
+        <div class="section-header">
+          <h2>Recent Activity</h2>
+          <p>Your latest achievements and learning milestones</p>
+        </div>
+        
+        <div class="activity-feed">
+          <div class="activity-item completed">
+            <div class="activity-icon">
+              <mat-icon>check_circle</mat-icon>
+            </div>
+            <div class="activity-content">
+              <h4>Completed Advanced Angular Course</h4>
+              <p>You've mastered reactive forms and advanced component patterns</p>
+              <span class="activity-time">2 hours ago</span>
+            </div>
+          </div>
+
+          <div class="activity-item achievement">
+            <div class="activity-icon">
+              <mat-icon>emoji_events</mat-icon>
+            </div>
+            <div class="activity-content">
+              <h4>Achievement Unlocked: Code Master</h4>
+              <p>Completed 10 programming challenges in a row</p>
+              <span class="activity-time">1 day ago</span>
+            </div>
+          </div>
+
+          <div class="activity-item progress">
+            <div class="activity-icon">
+              <mat-icon>trending_up</mat-icon>
+            </div>
+            <div class="activity-content">
+              <h4>Skills Assessment Improved</h4>
+              <p>Your JavaScript proficiency increased from 70% to 75%</p>
+              <span class="activity-time">3 days ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  

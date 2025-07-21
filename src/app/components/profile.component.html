@@ -1,0 +1,334 @@
+
+    <div class="profile-container">
+      <mat-card class="profile-header">
+        <div class="profile-header-content">
+          <div class="avatar-section">
+            <div class="avatar-circle">
+              <img *ngIf="profileImageUrl" [src]="profileImageUrl" [alt]="user?.firstName + ' ' + user?.lastName">
+              <mat-icon *ngIf="!profileImageUrl">person</mat-icon>
+            </div>
+            <input type="file" #fileInput (change)="onImageSelected($event)" accept="image/*" hidden>
+            <button mat-mini-fab color="primary" class="edit-avatar-btn" (click)="fileInput.click()">
+              <mat-icon>camera_alt</mat-icon>
+            </button>
+          </div>
+          <div class="user-info">
+            <h2>{{user?.firstName}} {{user?.lastName || 'User Name'}}</h2>
+            <p class="user-email">{{user?.email || 'user@example.com'}}</p>
+            <p class="user-role">{{user?.role || 'Student'}}</p>
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-tab-group class="profile-tabs">
+        <!-- Personal Information Tab -->
+        <mat-tab label="Personal Information">
+          <div class="tab-content">
+            <form [formGroup]="personalForm" (ngSubmit)="savePersonalInfo()">
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Basic Information</mat-card-title>
+                  <mat-card-subtitle>Update your personal details</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="form-grid">
+                    <mat-form-field appearance="outline">
+                      <mat-label>First Name</mat-label>
+                      <input matInput formControlName="firstName" required>
+                      <mat-error *ngIf="personalForm.get('firstName')?.hasError('required')">
+                        First name is required
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Last Name</mat-label>
+                      <input matInput formControlName="lastName" required>
+                      <mat-error *ngIf="personalForm.get('lastName')?.hasError('required')">
+                        Last name is required
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Email</mat-label>
+                      <input matInput type="email" formControlName="email" required readonly>
+                      <mat-error *ngIf="personalForm.get('email')?.hasError('required')">
+                        Email is required
+                      </mat-error>
+                      <mat-error *ngIf="personalForm.get('email')?.hasError('email')">
+                        Please enter a valid email
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Phone Number</mat-label>
+                      <input matInput formControlName="phoneNumber">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Date of Birth</mat-label>
+                      <input matInput [matDatepicker]="dobPicker" formControlName="dateOfBirth">
+                      <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #dobPicker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Specialization</mat-label>
+                      <mat-select formControlName="specialization">
+                        <mat-option value="Computer Science">Computer Science</mat-option>
+                        <mat-option value="Software Engineering">Software Engineering</mat-option>
+                        <mat-option value="Data Science">Data Science</mat-option>
+                        <mat-option value="Cybersecurity">Cybersecurity</mat-option>
+                        <mat-option value="Web Development">Web Development</mat-option>
+                        <mat-option value="Mobile Development">Mobile Development</mat-option>
+                        <mat-option value="DevOps">DevOps</mat-option>
+                        <mat-option value="UI/UX Design">UI/UX Design</mat-option>
+                        <mat-option value="Business Analysis">Business Analysis</mat-option>
+                        <mat-option value="Other">Other</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Study Year</mat-label>
+                      <mat-select formControlName="studyYear">
+                        <mat-option value="1">1st Year</mat-option>
+                        <mat-option value="2">2nd Year</mat-option>
+                        <mat-option value="3">3rd Year</mat-option>
+                        <mat-option value="4">4th Year</mat-option>
+                        <mat-option value="5">5th Year</mat-option>
+                        <mat-option value="6">Graduate</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Career Goals</mat-label>
+                      <textarea matInput rows="3" formControlName="careerGoals" 
+                               placeholder="What are your career aspirations?"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Bio</mat-label>
+                      <textarea matInput rows="4" formControlName="bio" 
+                               placeholder="Tell us about yourself..."></textarea>
+                    </mat-form-field>
+                  </div>
+                </mat-card-content>
+                <mat-card-actions>
+                  <button mat-raised-button color="primary" type="submit" [disabled]="personalForm.invalid || savingPersonal">
+                    <mat-spinner diameter="20" *ngIf="savingPersonal"></mat-spinner>
+                    <mat-icon *ngIf="!savingPersonal">save</mat-icon>
+                    {{savingPersonal ? 'Saving...' : 'Save Changes'}}
+                  </button>
+                  <button mat-button type="button" (click)="resetPersonalForm()">Reset</button>
+                </mat-card-actions>
+              </mat-card>
+            </form>
+          </div>
+        </mat-tab>
+
+        <!-- Professional Information Tab -->
+        <mat-tab label="Professional">
+          <div class="tab-content">
+            <form [formGroup]="professionalForm" (ngSubmit)="saveProfessionalInfo()">
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Professional Information</mat-card-title>
+                  <mat-card-subtitle>Update your career details</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="form-grid">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Current Job Title</mat-label>
+                      <input matInput formControlName="jobTitle">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Company</mat-label>
+                      <input matInput formControlName="company">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Industry</mat-label>
+                      <mat-select formControlName="industry">
+                        <mat-option value="technology">Technology</mat-option>
+                        <mat-option value="finance">Finance</mat-option>
+                        <mat-option value="healthcare">Healthcare</mat-option>
+                        <mat-option value="education">Education</mat-option>
+                        <mat-option value="marketing">Marketing</mat-option>
+                        <mat-option value="consulting">Consulting</mat-option>
+                        <mat-option value="other">Other</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Experience Level</mat-label>
+                      <mat-select formControlName="experienceLevel">
+                        <mat-option value="entry">Entry Level (0-2 years)</mat-option>
+                        <mat-option value="mid">Mid Level (3-5 years)</mat-option>
+                        <mat-option value="senior">Senior Level (6-10 years)</mat-option>
+                        <mat-option value="lead">Lead/Manager (10+ years)</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>LinkedIn Profile</mat-label>
+                      <input matInput formControlName="linkedInUrl" 
+                             placeholder="https://linkedin.com/in/your-profile">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Portfolio/Website</mat-label>
+                      <input matInput formControlName="portfolioUrl" 
+                             placeholder="https://your-portfolio.com">
+                    </mat-form-field>
+                  </div>
+
+                  <mat-divider class="section-divider"></mat-divider>
+
+                  <div class="skills-section">
+                    <h4>Skills</h4>
+                    <div class="skills-input">
+                      <mat-form-field appearance="outline" class="skill-input">
+                        <mat-label>Add Skill</mat-label>
+                        <input matInput #skillInput 
+                               (keyup.enter)="addSkill(skillInput.value); skillInput.value = ''"
+                               placeholder="Type a skill and press Enter">
+                      </mat-form-field>
+                      <button mat-icon-button type="button" 
+                              (click)="addSkill(skillInput.value); skillInput.value = ''">
+                        <mat-icon>add</mat-icon>
+                      </button>
+                    </div>
+                    
+                    <div class="skills-list" *ngIf="skillsList.length > 0">
+                      <mat-chip-set>
+                        <mat-chip *ngFor="let skill of skillsList; let i = index" 
+                                 [removable]="true" (removed)="removeSkill(i)">
+                          {{skill}}
+                          <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                      </mat-chip-set>
+                    </div>
+                  </div>
+                </mat-card-content>
+                <mat-card-actions>
+                  <button mat-raised-button color="primary" type="submit" 
+                          [disabled]="professionalForm.invalid || savingProfessional">
+                    <mat-spinner diameter="20" *ngIf="savingProfessional"></mat-spinner>
+                    <mat-icon *ngIf="!savingProfessional">save</mat-icon>
+                    {{savingProfessional ? 'Saving...' : 'Save Changes'}}
+                  </button>
+                  <button mat-button type="button" (click)="resetProfessionalForm()">Reset</button>
+                </mat-card-actions>
+              </mat-card>
+            </form>
+          </div>
+        </mat-tab>
+
+        <!-- Account Settings Tab -->
+        <mat-tab label="Account Settings">
+          <div class="tab-content">
+            <div class="settings-section">
+              <!-- Change Password -->
+              <mat-card class="settings-card">
+                <mat-card-header>
+                  <mat-card-title>Change Password</mat-card-title>
+                  <mat-card-subtitle>Update your account password</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                  <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+                    <div class="form-grid">
+                      <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Current Password</mat-label>
+                        <input matInput type="password" formControlName="currentPassword" required>
+                        <mat-error *ngIf="passwordForm.get('currentPassword')?.hasError('required')">
+                          Current password is required
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline">
+                        <mat-label>New Password</mat-label>
+                        <input matInput type="password" formControlName="newPassword" required>
+                        <mat-error *ngIf="passwordForm.get('newPassword')?.hasError('required')">
+                          New password is required
+                        </mat-error>
+                        <mat-error *ngIf="passwordForm.get('newPassword')?.hasError('minlength')">
+                          Password must be at least 6 characters
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline">
+                        <mat-label>Confirm New Password</mat-label>
+                        <input matInput type="password" formControlName="confirmPassword" required>
+                        <mat-error *ngIf="passwordForm.get('confirmPassword')?.hasError('required')">
+                          Please confirm your password
+                        </mat-error>
+                        <mat-error *ngIf="passwordForm.hasError('passwordMismatch')">
+                          Passwords do not match
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <mat-card-actions>
+                      <button mat-raised-button color="primary" type="submit" 
+                              [disabled]="passwordForm.invalid || changingPassword">
+                        <mat-spinner diameter="20" *ngIf="changingPassword"></mat-spinner>
+                        <mat-icon *ngIf="!changingPassword">lock</mat-icon>
+                        {{changingPassword ? 'Changing...' : 'Change Password'}}
+                      </button>
+                    </mat-card-actions>
+                  </form>
+                </mat-card-content>
+              </mat-card>
+
+              <!-- Account Actions -->
+              <mat-card class="settings-card">
+                <mat-card-header>
+                  <mat-card-title>Account Actions</mat-card-title>
+                  <mat-card-subtitle>Manage your account</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="account-actions">
+                    <div class="action-item">
+                      <div class="action-info">
+                        <h4>Export Your Data</h4>
+                        <p>Download all your data including CVs, interview progress, and files</p>
+                      </div>
+                      <button mat-stroked-button color="primary" (click)="exportData()">
+                        <mat-icon>download</mat-icon>
+                        Export Data
+                      </button>
+                    </div>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="action-item">
+                      <div class="action-info">
+                        <h4>Deactivate Account</h4>
+                        <p>Temporarily disable your account (you can reactivate it later)</p>
+                      </div>
+                      <button mat-stroked-button color="warn" (click)="deactivateAccount()">
+                        <mat-icon>pause_circle</mat-icon>
+                        Deactivate
+                      </button>
+                    </div>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="action-item danger-zone">
+                      <div class="action-info">
+                        <h4>Delete Account</h4>
+                        <p>Permanently delete your account and all associated data</p>
+                      </div>
+                      <button mat-stroked-button color="warn" (click)="deleteAccount()">
+                        <mat-icon>delete_forever</mat-icon>
+                        Delete Account
+                      </button>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  

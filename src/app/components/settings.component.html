@@ -1,0 +1,234 @@
+ 
+    <div class="settings-container">
+      <mat-card class="header-card">
+        <mat-card-header>
+          <mat-card-title>Settings</mat-card-title>
+          <mat-card-subtitle>Customize your SkillUp experience</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+
+      <!-- Notifications Settings -->
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>notifications</mat-icon>
+            Notifications
+          </mat-card-title>
+          <mat-card-subtitle>Manage your notification preferences</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="notificationForm">
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Email Notifications</h4>
+                <p>Receive updates about your progress and new features via email</p>
+              </div>
+              <mat-slide-toggle formControlName="emailNotifications"></mat-slide-toggle>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Interview Reminders</h4>
+                <p>Get reminded about upcoming mock interview sessions</p>
+              </div>
+              <mat-slide-toggle formControlName="interviewReminders"></mat-slide-toggle>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Progress Updates</h4>
+                <p>Weekly summary of your learning progress</p>
+              </div>
+              <mat-slide-toggle formControlName="progressUpdates"></mat-slide-toggle>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>AI Recommendations</h4>
+                <p>Personalized course and career recommendations</p>
+              </div>
+              <mat-slide-toggle formControlName="aiRecommendations"></mat-slide-toggle>
+            </div>
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="saveNotificationSettings()">
+            <mat-icon>save</mat-icon>
+            Save Notification Settings
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <!-- Appearance Settings -->
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>palette</mat-icon>
+            Appearance
+          </mat-card-title>
+          <mat-card-subtitle>Customize the look and feel</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="appearanceForm">
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Theme</mat-label>
+                <mat-select formControlName="theme">
+                  <mat-option value="light">Light</mat-option>
+                  <mat-option value="dark">Dark</mat-option>
+                  <mat-option value="auto">Auto (System)</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Language</mat-label>
+                <mat-select formControlName="language">
+                  <mat-option value="en">English</mat-option>
+                  <mat-option value="es">Spanish</mat-option>
+                  <mat-option value="fr">French</mat-option>
+                  <mat-option value="de">German</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Compact Mode</h4>
+                <p>Use a more compact layout to fit more content on screen</p>
+              </div>
+              <mat-slide-toggle formControlName="compactMode"></mat-slide-toggle>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Animations</h4>
+                <p>Enable smooth animations and transitions</p>
+              </div>
+              <mat-slide-toggle formControlName="animations"></mat-slide-toggle>
+            </div>
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="saveAppearanceSettings()">
+            <mat-icon>save</mat-icon>
+            Save Appearance Settings
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <!-- Privacy Settings -->
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>privacy_tip</mat-icon>
+            Privacy & Data
+          </mat-card-title>
+          <mat-card-subtitle>Control your data and privacy settings</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="privacyForm">
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Profile Visibility</h4>
+                <p>Allow other users to see your profile and progress</p>
+              </div>
+              <mat-slide-toggle formControlName="profileVisibility"></mat-slide-toggle>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Analytics & Usage Data</h4>
+                <p>Help improve SkillUp by sharing anonymous usage data</p>
+              </div>
+              <mat-slide-toggle formControlName="analyticsData"></mat-slide-toggle>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Data Export</h4>
+                <p>Download all your data in a portable format</p>
+              </div>
+              <button mat-stroked-button color="primary" (click)="exportData()">
+                <mat-icon>download</mat-icon>
+                Export Data
+              </button>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="setting-item danger-zone">
+              <div class="setting-info">
+                <h4>Clear All Data</h4>
+                <p>Remove all your progress, files, and settings (cannot be undone)</p>
+              </div>
+              <button mat-stroked-button color="warn" (click)="clearAllData()">
+                <mat-icon>delete_sweep</mat-icon>
+                Clear All Data
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="savePrivacySettings()">
+            <mat-icon>save</mat-icon>
+            Save Privacy Settings
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <!-- About Section -->
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>info</mat-icon>
+            About SkillUp
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="about-content">
+            <div class="app-info">
+              <h4>SkillUp Platform</h4>
+              <p>Version 1.0.0</p>
+              <p>Your AI-powered career development companion</p>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="links-section">
+              <h4>Support & Resources</h4>
+              <div class="link-buttons">
+                <button mat-stroked-button (click)="openLink('help')">
+                  <mat-icon>help</mat-icon>
+                  Help Center
+                </button>
+                <button mat-stroked-button (click)="openLink('terms')">
+                  <mat-icon>description</mat-icon>
+                  Terms of Service
+                </button>
+                <button mat-stroked-button (click)="openLink('privacy')">
+                  <mat-icon>privacy_tip</mat-icon>
+                  Privacy Policy
+                </button>
+                <button mat-stroked-button (click)="openLink('contact')">
+                  <mat-icon>contact_support</mat-icon>
+                  Contact Support
+                </button>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  

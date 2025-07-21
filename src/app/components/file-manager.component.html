@@ -1,0 +1,267 @@
+
+    <div class="file-manager-container">
+      <mat-card class="header-card">
+        <mat-card-header>
+          <mat-card-title>File Manager</mat-card-title>
+          <mat-card-subtitle>Manage your uploaded documents and files</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions>
+          <input type="file" #fileInput (change)="onFileSelected($event)" multiple hidden>
+          <button mat-raised-button color="primary" (click)="fileInput.click()" [disabled]="uploading">
+            <mat-icon>cloud_upload</mat-icon>
+            Upload Files
+          </button>
+          <button mat-button (click)="createFolder()">
+            <mat-icon>create_new_folder</mat-icon>
+            New Folder
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <!-- Upload Progress -->
+      <mat-card class="upload-progress-card" *ngIf="uploadProgress.length > 0">
+        <mat-card-header>
+          <mat-card-title>Upload Progress</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="upload-item" *ngFor="let upload of uploadProgress">
+            <div class="upload-info">
+              <span class="file-name">{{upload.fileName}}</span>
+              <span class="file-size">{{formatFileSize(upload.fileSize)}}</span>
+            </div>
+            <mat-progress-bar 
+              mode="determinate" 
+              [value]="upload.progress"
+              [color]="upload.status === 'error' ? 'warn' : 'primary'">
+            </mat-progress-bar>
+            <div class="upload-status">
+              <mat-icon *ngIf="upload.status === 'completed'" color="primary">check_circle</mat-icon>
+              <mat-icon *ngIf="upload.status === 'error'" color="warn">error</mat-icon>
+              <span>{{upload.progress}}%</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Filters and Search -->
+      <mat-card class="filters-card">
+        <mat-card-content>
+          <div class="filters-row">
+            <mat-form-field appearance="outline" class="search-field">
+              <mat-label>Search files</mat-label>
+              <input matInput [formControl]="searchControl" placeholder="Search by name or type...">
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>File Type</mat-label>
+              <mat-select [formControl]="typeFilter" multiple>
+                <mat-option value="pdf">PDF</mat-option>
+                <mat-option value="doc">Document</mat-option>
+                <mat-option value="image">Image</mat-option>
+                <mat-option value="video">Video</mat-option>
+                <mat-option value="other">Other</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Sort By</mat-label>
+              <mat-select [formControl]="sortControl">
+                <mat-option value="name">Name</mat-option>
+                <mat-option value="date">Date</mat-option>
+                <mat-option value="size">Size</mat-option>
+                <mat-option value="type">Type</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <button mat-icon-button [matMenuTriggerFor]="viewMenu" matTooltip="View Options">
+              <mat-icon>view_module</mat-icon>
+            </button>
+            <mat-menu #viewMenu="matMenu">
+              <button mat-menu-item (click)="viewMode = 'grid'">
+                <mat-icon>view_module</mat-icon>
+                Grid View
+              </button>
+              <button mat-menu-item (click)="viewMode = 'list'">
+                <mat-icon>view_list</mat-icon>
+                List View
+              </button>
+            </mat-menu>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- File Grid View -->
+      <div class="files-grid" *ngIf="viewMode === 'grid'">
+        <div class="file-card" *ngFor="let file of filteredFiles" (click)="selectFile(file)" 
+             [class.selected]="selectedFiles.has(file.id)">
+          <div class="file-icon">
+            <mat-icon [class]="getFileIconClass(file.contentType)">{{getFileIcon(file.contentType)}}</mat-icon>
+          </div>
+          <div class="file-info">
+            <h4 class="file-name" [matTooltip]="file.originalFileName">{{file.originalFileName}}</h4>
+            <p class="file-details">{{formatFileSize(file.fileSize)}} • {{file.uploadedAt | date:'short'}}</p>
+            <div class="file-tags" *ngIf="file.tags.length > 0">
+              <mat-chip *ngFor="let tag of file.tags">{{tag}}</mat-chip>
+            </div>
+          </div>
+          <div class="file-actions">
+            <button mat-icon-button [matMenuTriggerFor]="fileMenu" (click)="$event.stopPropagation()">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #fileMenu="matMenu">
+              <button mat-menu-item (click)="downloadFile(file)">
+                <mat-icon>download</mat-icon>
+                Download
+              </button>
+              <button mat-menu-item (click)="shareFile(file)">
+                <mat-icon>share</mat-icon>
+                Share
+              </button>
+              <button mat-menu-item (click)="renameFile(file)">
+                <mat-icon>edit</mat-icon>
+                Rename
+              </button>
+              <button mat-menu-item (click)="deleteFile(file)" class="danger">
+                <mat-icon>delete</mat-icon>
+                Delete
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+      </div>
+
+      <!-- File List View -->
+      <mat-card class="files-table-card" *ngIf="viewMode === 'list'">
+        <mat-card-content>
+          <table mat-table [dataSource]="filteredFiles" class="files-table">
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef>
+                <input type="checkbox" (change)="toggleAllFiles($event)">
+              </th>
+              <td mat-cell *matCellDef="let file">
+                <input type="checkbox" 
+                       [checked]="selectedFiles.has(file.id)"
+                       (change)="toggleFileSelection(file, $event)">
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let file">
+                <div class="file-name-cell">
+                  <mat-icon [class]="getFileIconClass(file.contentType)">{{getFileIcon(file.contentType)}}</mat-icon>
+                  <span>{{file.originalFileName}}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="size">
+              <th mat-header-cell *matHeaderCellDef>Size</th>
+              <td mat-cell *matCellDef="let file">{{formatFileSize(file.fileSize)}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef>Type</th>
+              <td mat-cell *matCellDef="let file">{{getFileType(file.contentType)}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="uploaded">
+              <th mat-header-cell *matHeaderCellDef>Uploaded</th>
+              <td mat-cell *matCellDef="let file">{{file.uploadedAt | date:'medium'}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="tags">
+              <th mat-header-cell *matHeaderCellDef>Tags</th>
+              <td mat-cell *matCellDef="let file">
+                <div class="tags-cell">
+                  <mat-chip *ngFor="let tag of file.tags">{{tag}}</mat-chip>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let file">
+                <button mat-icon-button [matMenuTriggerFor]="tableFileMenu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #tableFileMenu="matMenu">
+                  <button mat-menu-item (click)="downloadFile(file)">
+                    <mat-icon>download</mat-icon>
+                    Download
+                  </button>
+                  <button mat-menu-item (click)="shareFile(file)">
+                    <mat-icon>share</mat-icon>
+                    Share
+                  </button>
+                  <button mat-menu-item (click)="renameFile(file)">
+                    <mat-icon>edit</mat-icon>
+                    Rename
+                  </button>
+                  <button mat-menu-item (click)="deleteFile(file)" class="danger">
+                    <mat-icon>delete</mat-icon>
+                    Delete
+                  </button>
+                </mat-menu>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+                (click)="selectFile(row)" 
+                [class.selected]="selectedFiles.has(row.id)">
+            </tr>
+          </table>
+
+          <mat-paginator 
+            [pageSizeOptions]="[10, 25, 50, 100]"
+            [pageSize]="25"
+            showFirstLastButtons>
+          </mat-paginator>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Selected Files Actions -->
+      <div class="selected-actions" *ngIf="selectedFiles.size > 0">
+        <mat-card>
+          <mat-card-content>
+            <div class="actions-content">
+              <span class="selection-info">{{selectedFiles.size}} file(s) selected</span>
+              <div class="actions-buttons">
+                <button mat-button (click)="downloadSelected()">
+                  <mat-icon>download</mat-icon>
+                  Download
+                </button>
+                <button mat-button (click)="deleteSelected()">
+                  <mat-icon>delete</mat-icon>
+                  Delete
+                </button>
+                <button mat-button (click)="clearSelection()">
+                  <mat-icon>clear</mat-icon>
+                  Clear Selection
+                </button>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="files.length === 0">
+        <mat-card>
+          <mat-card-content>
+            <div class="empty-content">
+              <mat-icon class="empty-icon">cloud_upload</mat-icon>
+              <h3>No Files Yet</h3>
+              <p>Upload your first files to get started with organizing your documents.</p>
+              <button mat-raised-button color="primary" (click)="fileInput.click()">
+                <mat-icon>add</mat-icon>
+                Upload Files
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  

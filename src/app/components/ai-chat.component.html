@@ -1,0 +1,188 @@
+<div class="ai-chat-container">
+  <!-- Header Section -->
+  <div class="chat-header">
+    <div class="header-content">
+      <div class="ai-avatar">
+        <mat-icon fontSet="material-icons">psychology</mat-icon>
+      </div>
+      <div class="header-text">
+        <h1>Startup Platform</h1>
+        <p>AI Career Assistant</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-tabs">
+    <mat-tab-group mat-align-tabs="center" class="modern-tabs">
+      <!-- Chat Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon fontSet="material-icons">chat</mat-icon>
+          <span>AI Chat Assistant</span>
+        </ng-template>
+        
+        <div class="chat-content">
+          <div class="messages-container" #messagesContainer>
+            <!-- Welcome message -->
+            <div class="message ai-message welcome-message" *ngIf="messages.length === 0">
+              <div class="message-content">
+                <div class="message-text">
+                  <div class="message-body">
+                    <h3>AI Welcome to your AI Career Assistant</h3>
+                    <ul class="process-list">
+                      <li>Create the Web process</li>
+                      <li>Create a web environment</li>
+                      <li>Create a new experience</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat messages -->
+            <div *ngFor="let message of messages; let i = index" 
+                 class="message" 
+                 [class.user-message]="message.isFromUser"
+                 [class.ai-message]="!message.isFromUser">
+              <div class="message-content">
+                <div class="message-text">
+                  <div class="message-body" [innerHTML]="formatMessage(message.content)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick suggestions -->
+          <div class="quick-suggestions" *ngIf="messages.length === 0">
+            <h3>Code: Start Questions</h3>
+            <div class="suggestions-list">
+              <div class="suggestion-item">
+                1. Use your code to create an open system called
+              </div>
+              <div class="suggestion-item">
+                2. Make sure that you can get the code through
+              </div>
+              <div class="suggestion-item">
+                3. Your code will be created by the instructor
+              </div>
+              <div class="suggestion-item">
+                4. The code will be created by another
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat input -->
+          <div class="chat-input-container">
+            <form [formGroup]="chatForm" (ngSubmit)="sendMessage()" class="chat-form">
+              <div class="input-wrapper">
+                <mat-form-field appearance="outline" class="chat-input">
+                  <input matInput formControlName="message" 
+                         (keydown.enter)="sendMessage()"
+                         [disabled]="isLoading"
+                         placeholder="Type your message here...">
+                </mat-form-field>
+                <button mat-mini-fab color="primary" type="submit" 
+                        [disabled]="chatForm.invalid || isLoading"
+                        class="send-btn">
+                  <mat-icon fontSet="material-icons">send</mat-icon>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Skill Analysis Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon fontSet="material-icons">analytics</mat-icon>
+          <span>AI Analytics</span>
+        </ng-template>
+        
+        <div class="analysis-content">
+          <div class="analysis-card">
+            <div class="card-header">
+              <mat-icon fontSet="material-icons">analytics</mat-icon>
+              <div class="header-text">
+                <h2>Skill Gap Analysis</h2>
+                <p>Discover which skills to develop for your career goals</p>
+              </div>
+            </div>
+            
+            <div class="form-section">
+              <h3>Current Role & Experience</h3>
+              <div class="form-row">
+                <mat-form-field appearance="outline">
+                  <input matInput placeholder="Current Job Title">
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <input matInput type="number" placeholder="Years of Experience">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Target Role</h3>
+              <mat-form-field appearance="outline" class="full-width">
+                <input matInput placeholder="Desired Position">
+              </mat-form-field>
+            </div>
+
+            <div class="form-section">
+              <h3>Current Skills</h3>
+              <mat-form-field appearance="outline">
+                <input matInput placeholder="Add a skill">
+              </mat-form-field>
+            </div>
+
+            <div class="form-actions">
+              <button mat-raised-button color="primary">
+                Analyze Skills
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Career Recommendations Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon fontSet="material-icons">business</mat-icon>
+          <span>Career Pathes</span>
+        </ng-template>
+        
+        <div class="career-content">
+          <div class="career-card">
+            <div class="card-header">
+              <mat-icon fontSet="material-icons">trending_up</mat-icon>
+              <div class="header-text">
+                <h2>Career Path Recommendations</h2>
+                <p>Explore potential career trajectories based on your skills and interests</p>
+              </div>
+            </div>
+            
+            <div class="form-section">
+              <h3>Career Interests</h3>
+              <div class="interests-list">
+                <div class="interest-item">Web Development</div>
+                <div class="interest-item">AI learing</div>
+                <div class="interest-item">Mobile App</div>
+                <div class="interest-item">Software Develpment</div>
+                <div class="interest-item">UI&UX Design</div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Work Preferences</h3>
+              <div class="preferences-list">
+                <div class="preference-item">Learn</div>
+                <div class="preference-item">Learn</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

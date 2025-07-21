@@ -1,0 +1,238 @@
+/* Styles */
+.ai-chat-container {
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 20px;
+}
+
+.chat-header {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    
+    .ai-avatar {
+      width: 50px;
+      height: 50px;
+      background: #3f51b5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      mat-icon {
+        color: white;
+        font-size: 30px;
+      }
+    }
+    
+    .header-text {
+      h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #333;
+      }
+      
+      p {
+        margin: 5px 0 0;
+        font-size: 0.9rem;
+        color: #666;
+      }
+    }
+  }
+}
+
+.chat-tabs {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  
+  ::ng-deep .modern-tabs {
+    .mat-mdc-tab-header {
+      border-bottom: 1px solid #eee;
+      
+      .mat-mdc-tab {
+        min-width: 120px;
+        padding: 12px 16px;
+        
+        .mat-mdc-tab-label-content {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.9rem;
+          
+          mat-icon {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.chat-content {
+  padding: 15px;
+}
+
+.messages-container {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  min-height: 300px;
+}
+
+.welcome-message {
+  .message-body {
+    h3 {
+      margin: 0 0 15px 0;
+      font-size: 1.2rem;
+      color: #333;
+    }
+    
+    .process-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      
+      li {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+        color: #555;
+        
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}
+
+.quick-suggestions {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  
+  h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  .suggestions-list {
+    .suggestion-item {
+      padding: 10px;
+      background: #f9f9f9;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      color: #555;
+    }
+  }
+}
+
+.chat-input-container {
+  display: flex;
+  gap: 10px;
+  
+  .chat-input {
+    flex: 1;
+    
+    ::ng-deep .mat-mdc-text-field-wrapper {
+      border-radius: 20px;
+      background: white;
+    }
+  }
+  
+  .send-btn {
+    background: #3f51b5;
+    color: white;
+  }
+}
+
+.analysis-content, .career-content {
+  padding: 15px;
+  
+  .analysis-card, .career-card {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      
+      mat-icon {
+        color: #3f51b5;
+        font-size: 30px;
+      }
+      
+      .header-text {
+        h2 {
+          margin: 0;
+          font-size: 1.3rem;
+          color: #333;
+        }
+        
+        p {
+          margin: 5px 0 0;
+          font-size: 0.9rem;
+          color: #666;
+        }
+      }
+    }
+  }
+}
+
+.form-section {
+  margin-bottom: 20px;
+  
+  h3 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    
+    mat-form-field {
+      flex: 1;
+    }
+  }
+}
+
+.interests-list, .preferences-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  
+  .interest-item, .preference-item {
+    padding: 8px 15px;
+    background: #f0f0f0;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #555;
+  }
+}
+
+.form-actions {
+  margin-top: 20px;
+  
+  button {
+    background: #3f51b5;
+    color: white;
+    width: 100%;
+  }
+}

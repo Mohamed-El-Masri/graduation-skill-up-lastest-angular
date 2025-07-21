@@ -1,0 +1,247 @@
+<div class="resources-container">
+  <!-- Hero Header -->
+  <div class="hero-header">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Learning Resources Hub</h1>
+        <p>Discover curated articles, videos, courses, and tools to accelerate your learning journey</p>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">{{ resources.length }}</span>
+            <span class="stat-label">Resources</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{ categories.length }}</span>
+            <span class="stat-label">Categories</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">15K+</span>
+            <span class="stat-label">Learners</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="floating-card">
+          <mat-icon>school</mat-icon>
+          <span>Expert Content</span>
+        </div>
+        <div class="floating-card">
+          <mat-icon>trending_up</mat-icon>
+          <span>Skill Growth</span>
+        </div>
+        <div class="floating-card">
+          <mat-icon>verified</mat-icon>
+          <span>Certified</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filters -->
+  <div class="search-filters-section">
+    <div class="search-bar">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search resources...</mat-label>
+        <input matInput [(ngModel)]="searchQuery" (input)="onSearchChange()" placeholder="What do you want to learn?">
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="filters-row">
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Category</mat-label>
+        <mat-select [(value)]="selectedCategory" (selectionChange)="onFilterChange()">
+          <mat-option value="all">All Categories</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category.name">
+            <mat-icon>{{ category.icon }}</mat-icon>
+            {{ category.name }} ({{ category.count }})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Type</mat-label>
+        <mat-select [(value)]="selectedType" (selectionChange)="onFilterChange()">
+          <mat-option *ngFor="let type of resourceTypes" [value]="type">
+            <mat-icon>{{ getTypeIcon(type) }}</mat-icon>
+            {{ type === 'all' ? 'All Types' : type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Difficulty</mat-label>
+        <mat-select [(value)]="selectedDifficulty" (selectionChange)="onFilterChange()">
+          <mat-option *ngFor="let difficulty of difficulties" [value]="difficulty">
+            {{ difficulty === 'all' ? 'All Levels' : difficulty }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="filter-clear-btn" 
+              (click)="selectedCategory = 'all'; selectedType = 'all'; selectedDifficulty = 'all'; searchQuery = ''; onFilterChange()">
+        <mat-icon>clear_all</mat-icon>
+        Clear Filters
+      </button>
+    </div>
+  </div>
+
+  <!-- Results Summary -->
+  <div class="results-summary" *ngIf="!isLoading">
+    <div class="summary-content">
+      <span class="results-count">{{ filteredResources.length }} resources found</span>
+      <div class="view-options">
+        <mat-icon>view_module</mat-icon>
+        <span>Grid View</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <h3>Loading amazing resources...</h3>
+      <p>Preparing the best learning materials for you</p>
+    </div>
+  </div>
+
+  <!-- Resources Grid -->
+  <div class="resources-grid" *ngIf="!isLoading">
+    <div *ngFor="let resource of filteredResources; let i = index" 
+         class="resource-card-wrapper"
+         [style.animation-delay.ms]="i * 100">
+      <mat-card class="resource-card">
+        <div class="card-header">
+          <div class="resource-type">
+            <div class="type-icon">
+              <mat-icon>{{ getTypeIcon(resource.type) }}</mat-icon>
+            </div>
+            <span class="type-label">{{ resource.type }}</span>
+          </div>
+          <div class="card-actions">
+            <button mat-icon-button 
+                    class="action-btn favorite-btn"
+                    [class.active]="resource.isFavorite"
+                    (click)="toggleFavorite(resource)"
+                    [attr.aria-label]="resource.isFavorite ? 'Remove from favorites' : 'Add to favorites'">
+              <mat-icon>{{ resource.isFavorite ? 'favorite' : 'favorite_border' }}</mat-icon>
+            </button>
+            <button mat-icon-button 
+                    class="action-btn bookmark-btn"
+                    [class.active]="resource.isBookmarked"
+                    (click)="toggleBookmark(resource)"
+                    [attr.aria-label]="resource.isBookmarked ? 'Remove bookmark' : 'Add bookmark'">
+              <mat-icon>{{ resource.isBookmarked ? 'bookmark' : 'bookmark_border' }}</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <mat-card-header>
+          <mat-card-title>{{ resource.title }}</mat-card-title>
+          <mat-card-subtitle>
+            <mat-icon>person</mat-icon>
+            {{ resource.author }}
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <p class="description">{{ resource.description }}</p>
+
+          <div class="resource-meta">
+            <div class="meta-row">
+              <div class="meta-item" *ngIf="resource.duration">
+                <mat-icon>schedule</mat-icon>
+                <span>{{ formatDuration(resource.duration) }}</span>
+              </div>
+              <div class="meta-item">
+                <mat-icon>calendar_today</mat-icon>
+                <span>{{ resource.publishedDate | date:'MMM d, y' }}</span>
+              </div>
+              <div class="difficulty-badge">
+                <mat-chip [class]="'difficulty-' + resource.difficulty.toLowerCase()">
+                  {{ resource.difficulty }}
+                </mat-chip>
+              </div>
+            </div>
+          </div>
+
+          <div class="rating-section">
+            <div class="stars">
+              <mat-icon *ngFor="let star of getStars(resource.rating)" 
+                        [class.filled]="star === 1">star</mat-icon>
+            </div>
+            <span class="rating-text">{{ resource.rating }} ({{ resource.reviewsCount }} reviews)</span>
+          </div>
+
+          <div class="tags-section">
+            <mat-chip-set>
+              <mat-chip *ngFor="let tag of resource.tags" class="resource-tag">
+                {{ tag }}
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+          <button mat-button class="secondary-btn" (click)="shareResource(resource)">
+            <mat-icon>share</mat-icon>
+            Share
+          </button>
+          <button mat-raised-button color="primary" class="primary-btn" (click)="openResource(resource)">
+            <mat-icon>open_in_new</mat-icon>
+            Open Resource
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && filteredResources.length === 0" class="empty-state">
+    <div class="empty-illustration">
+      <mat-icon>search_off</mat-icon>
+      <div class="empty-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+    <h3>No resources found</h3>
+    <p>We couldn't find any resources matching your criteria. Try adjusting your filters or browse all categories to discover amazing content.</p>
+    <button mat-raised-button color="primary" class="empty-action-btn"
+            (click)="selectedCategory = 'all'; selectedType = 'all'; selectedDifficulty = 'all'; searchQuery = ''; onFilterChange()">
+      <mat-icon>refresh</mat-icon>
+      Reset and Browse All
+    </button>
+  </div>
+
+  <!-- Categories Section -->
+  <div class="categories-section" *ngIf="!isLoading && filteredResources.length > 0">
+    <div class="section-header">
+      <h2>Explore by Category</h2>
+      <p>Find resources tailored to your learning path</p>
+    </div>
+    <div class="categories-grid">
+      <div *ngFor="let category of categories; let i = index" 
+           class="category-card-wrapper"
+           [style.animation-delay.ms]="i * 50">
+        <mat-card class="category-card"
+                  (click)="selectedCategory = category.name; onFilterChange()">
+          <mat-card-content>
+            <div class="category-icon">
+              <mat-icon>{{ category.icon }}</mat-icon>
+            </div>
+            <div class="category-info">
+              <h3>{{ category.name }}</h3>
+              <p>{{ category.count }} resources available</p>
+            </div>
+            <div class="category-arrow">
+              <mat-icon>arrow_forward</mat-icon>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
